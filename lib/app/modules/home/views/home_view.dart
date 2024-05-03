@@ -4,11 +4,14 @@ import 'package:get/get.dart';
 
 import '../controllers/home_controller.dart';
 
+import '../../../services/keepAliveWrapper.dart';
+
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return KeepAliveWrapper(
+      child: Scaffold(
       appBar: AppBar(
         title: const Text('HomeView'),
         centerTitle: true,
@@ -19,6 +22,6 @@ class HomeView extends GetView<HomeController> {
           style: TextStyle(fontSize: 20),
         ),
       ),
-    );
+    ));
   }
 }
