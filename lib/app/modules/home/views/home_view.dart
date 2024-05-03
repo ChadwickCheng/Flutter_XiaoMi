@@ -73,27 +73,115 @@ class HomeView extends GetView<HomeController> {
       child: ListView(
         controller: controller.scrollController,
         children: [
-          SizedBox(
-            width: ScreenAdapter.width(1080),
-            height: ScreenAdapter.height(682),
-            child: Obx(()=>Swiper(
-              itemCount: controller.swiperList.length,
-              autoplay: true,
-              itemBuilder: (BuildContext context, int index) {
-                String picUrl = "https://miapp.itying.com/${controller.swiperList[index]["pic"]}";
-                return Image.network(
-                  picUrl.replaceAll('\\', '/'),
-                  fit: BoxFit.fill,
-                );
-              },
-              pagination: const SwiperPagination(
-                builder: SwiperPagination.rect, // 分页指示器样式
-              ),
-              loop: true,
-            )),
-          )
+          _focus(),
+          _banner(),
+          _category(),
         ],
       )
+    );
+  }
+
+  // 轮播图
+  Widget _focus(){
+    return SizedBox(
+      width: ScreenAdapter.width(1080),
+      height: ScreenAdapter.height(682),
+      child: Obx(()=>Swiper(
+        itemCount: controller.swiperList.length,
+        autoplay: true,
+        itemBuilder: (BuildContext context, int index) {
+          String picUrl = "https://miapp.itying.com/${controller.swiperList[index].pic}";
+          return Image.network(
+            picUrl.replaceAll('\\', '/'),
+            fit: BoxFit.fill,
+          );
+        },
+        pagination: const SwiperPagination(
+          builder: SwiperPagination.rect, // 分页指示器样式
+        ),
+        loop: true,
+      )),
+    );
+  }
+
+  // banner
+  Widget _banner(){
+    return SizedBox(
+      width: ScreenAdapter.width(1080),
+      height: ScreenAdapter.height(92),
+      child: Image.asset(
+        "assets/images/xiaomiBanner.png",
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  // 分类
+  Widget _category(){
+    return SizedBox(
+      width: ScreenAdapter.width(1080),
+      height: ScreenAdapter.height(470),
+      child: Obx(() => Swiper(
+        itemBuilder: (context, index) { // index 0-1
+          return GridView.builder(
+            itemCount: 10,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 5,
+              crossAxisSpacing: ScreenAdapter.width(20),
+              mainAxisSpacing: ScreenAdapter.height(20),
+            ),
+            itemBuilder: (context, i) { // i 0-9
+            String picUrl = "https://miapp.itying.com/${controller.categoryList[index * 10 + i].pic}";
+              return Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: ScreenAdapter.height(140),
+                    height: ScreenAdapter.height(140),
+                    child: Image.network(
+                      picUrl.replaceAll('\\', '/'),
+                      fit: BoxFit.fitHeight
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, ScreenAdapter.height(4), 0, 0),
+                    child: Text(
+                      "${controller.categoryList[index * 10 + i].title}",
+                      style: TextStyle(
+                        fontSize: ScreenAdapter.fontSize(34)
+                      )
+                    ),
+                  )
+                ],
+              );
+            }
+          );
+        },
+        itemCount: controller.categoryList.length ~/ 10, // ~/ 为取整运算符 如果写死2，那么一开始数组没数据会报错
+        pagination: SwiperPagination(
+          margin: const EdgeInsets.all(0.0),
+          builder: SwiperCustomPagination(
+            builder:(BuildContext context, SwiperPluginConfig config) {
+              return ConstrainedBox(
+                constraints: BoxConstraints.expand(height: ScreenAdapter.height(20)),
+                child: Row(
+                  children: <Widget>[                            
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: const RectSwiperPaginationBuilder(
+                          color: Colors.black12,
+                          activeColor: Colors.black54,
+                        ).build(context, config),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+          )
+        ),
+      )),
     );
   }
 

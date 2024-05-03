@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import '../../../models//focus_model.dart';
+import '../../../models/category_model.dart';
 
 class HomeController extends GetxController {
   Dio dio = new Dio();
@@ -10,7 +12,9 @@ class HomeController extends GetxController {
   // 说白了就是通过监听listview的滚动举例来改变flag，通过flag的三目运算来改变appbar的样式，所以会见到大量的有关flag的三目运算
   final ScrollController scrollController = ScrollController();
   // 轮播图
-  RxList swiperList = [].obs;
+  RxList<FocusItemModel> swiperList = <FocusItemModel>[].obs;
+  // 分类
+  RxList<CategoryItemModel> categoryList = <CategoryItemModel>[].obs;
 
   @override
   void onInit() {
@@ -18,6 +22,8 @@ class HomeController extends GetxController {
     scrollControllerListener();
     // 请求轮播图数据
     getFocusData();
+    // 请求分类数据
+    getCategoryData();
   }
 
   void scrollControllerListener(){
@@ -38,10 +44,19 @@ class HomeController extends GetxController {
       }
     });
   }
-
+  // 轮播图数据
   getFocusData() async{
     var res = await dio.get('https://miapp.itying.com/api/focus');
-    swiperList.value = res.data['result'];
+    var focus = FocusModel.fromJson(res.data);
+    swiperList.value = focus.result!;
+    update();
+  }
+
+  // 首页分类数据
+  getCategoryData() async {
+    var response = await Dio().get("https://miapp.itying.com/api/bestCate");
+    var category=CategoryModel.fromJson(response.data); 
+    categoryList.value=category.result!;
     update();
   }
 }
