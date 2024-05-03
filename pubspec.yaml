@@ -8,6 +8,9 @@ environment:
 dependencies: 
   cupertino_icons: ^1.0.6
   get: 4.6.6
+  flutter_screenutil: ^5.9.0
+  flutter_swiper_view: ^1.1.8
+  dio: ^5.4.3+1
   flutter: 
     sdk: flutter
 
@@ -18,4 +21,7 @@ dev_dependencies:
 
 flutter: 
   uses-material-design: true
-
+  fonts:
+    - family: ityingIcon   #指定一个字体名 根据自己的需求定义
+      fonts:
+        - asset: assets/fonts/iconfont.ttf
