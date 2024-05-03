@@ -40,8 +40,7 @@ class HomeController extends GetxController {
   }
 
   getFocusData() async{
-    var res = await dio.get('https://xiaomi.itying.com/api/focus');
-    print(res.data);
+    var res = await dio.get('https://miapp.itying.com/api/focus');
     swiperList.value = res.data['result'];
     update();
   }

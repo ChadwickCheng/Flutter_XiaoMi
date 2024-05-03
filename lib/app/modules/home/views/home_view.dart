@@ -80,8 +80,7 @@ class HomeView extends GetView<HomeController> {
               itemCount: controller.swiperList.length,
               autoplay: true,
               itemBuilder: (BuildContext context, int index) {
-                String picUrl = "https://xiaomi.itying.com/${controller.swiperList[index]["pic"]}";
-                print('picUrl: $picUrl');
+                String picUrl = "https://miapp.itying.com/${controller.swiperList[index]["pic"]}";
                 return Image.network(
                   picUrl.replaceAll('\\', '/'),
                   fit: BoxFit.fill,
