@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import '../../../models//focus_model.dart';
 import '../../../models/category_model.dart';
+import '../../../models/plist_model.dart';
 
 class HomeController extends GetxController {
-  Dio dio = new Dio();
+  Dio dio = Dio();
 
   // 浮动导航开关
   RxBool flag = false.obs;
@@ -15,6 +16,12 @@ class HomeController extends GetxController {
   RxList<FocusItemModel> swiperList = <FocusItemModel>[].obs;
   // 分类
   RxList<CategoryItemModel> categoryList = <CategoryItemModel>[].obs;
+  // 甄选商品
+  RxList<PlistItemModel> sellingPlist = <PlistItemModel>[].obs;
+  // 甄选轮播图
+  RxList<FocusItemModel> bestSellingSwiperList = <FocusItemModel>[].obs;  
+  // 热门商品
+  RxList<PlistItemModel> bestPlist = <PlistItemModel>[].obs;
 
   @override
   void onInit() {
@@ -24,6 +31,12 @@ class HomeController extends GetxController {
     getFocusData();
     // 请求分类数据
     getCategoryData();
+    // 甄选轮播图
+    getSellingSwiperData();
+    // 甄选商品
+    getSellingPlistData();
+    // 获取热门商品
+    getBestPlistData();
   }
 
   void scrollControllerListener(){
@@ -57,6 +70,30 @@ class HomeController extends GetxController {
     var response = await Dio().get("https://miapp.itying.com/api/bestCate");
     var category=CategoryModel.fromJson(response.data); 
     categoryList.value=category.result!;
+    update();
+  }
+
+  // 甄选轮播图
+  getSellingSwiperData() async {
+    var response = await Dio().get("https://miapp.itying.com/api/focus?position=2");
+    var sellingSwiper=FocusModel.fromJson(response.data);     
+    bestSellingSwiperList.value=sellingSwiper.result!;
+    update();
+  }
+
+  // 甄选商品
+  getSellingPlistData() async {
+    var response = await Dio().get("https://miapp.itying.com/api/plist?is_hot=1&pageSize=3");
+    var plist=PlistModel.fromJson(response.data);     
+    sellingPlist.value=plist.result!;
+    update();
+  }
+
+  // 热门商品
+  getBestPlistData() async {
+    var response = await Dio().get("https://miapp.itying.com/api/plist?is_best=1");
+    var plist=PlistModel.fromJson(response.data);     
+    bestPlist.value=plist.result!;
     update();
   }
 }
