@@ -18,9 +18,13 @@ void main() {
       builder: (context , child) {
         return  GetMaterialApp(
           debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.grey, // 返回按钮
+          ),
           title: "Application",
           initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
+          defaultTransition: Transition.rightToLeft, // ios风格的切换动画
         );
       }
     )

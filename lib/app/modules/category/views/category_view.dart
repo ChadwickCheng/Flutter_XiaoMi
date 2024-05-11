@@ -61,14 +61,19 @@ class CategoryView extends GetView<CategoryController> {
               mainAxisSpacing: ScreenAdapter.height(20),
               childAspectRatio: 240 / 340),
           itemBuilder: ((context, index) {
-            return Column(
+            return InkWell(
+              onTap: (){
+                Get.toNamed("/product-list",arguments: {
+                    "cid":controller.rightCategoryList[index].sId
+                });
+              },
+              child: Column(
               children: [
                 Container(
                   alignment: Alignment.center,
                   width: double.infinity,
-                  child: Image.network(
-                    HttpsClient.replaeUri(controller.rightCategoryList[index].pic),
-                    fit: BoxFit.fitHeight),
+                  child: Image.network(HttpsClient.replaeUri(controller.rightCategoryList[index].pic),
+                      fit: BoxFit.fitHeight),
                 ),
                 Padding(
                   padding:
@@ -77,6 +82,7 @@ class CategoryView extends GetView<CategoryController> {
                       style: TextStyle(fontSize: ScreenAdapter.fontSize(34))),
                 )
               ],
+            ),
             );
           }))),
     ));
