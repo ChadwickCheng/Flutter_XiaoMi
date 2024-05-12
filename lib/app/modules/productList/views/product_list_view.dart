@@ -8,8 +8,7 @@ class ProductListView extends GetView<ProductListController> {
   const ProductListView({Key? key}) : super(key: key);
 
   Widget _productListWidget() {
-    return Obx(() => controller.plist.isNotEmpty
-      ? ListView.builder(
+    return ListView.builder(
       controller: controller.scrollController,
         padding: EdgeInsets.fromLTRB(ScreenAdapter.width(26), ScreenAdapter.width(140),
             ScreenAdapter.width(26), ScreenAdapter.height(26)),
@@ -115,9 +114,7 @@ class ProductListView extends GetView<ProductListController> {
               : const Text('')
             ],
           );
-        })
-        : _progressIndicator()
-        );
+        });
   }
 
   Widget _subHeaderWidget() {
@@ -220,27 +217,40 @@ class ProductListView extends GetView<ProductListController> {
             color: const Color.fromRGBO(246, 246, 246, 1),
             borderRadius: BorderRadius.circular(30),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                    ScreenAdapter.width(34), 0, ScreenAdapter.width(10), 0),
-                child: const Icon(Icons.search),
-              ),
-              Text("手机",
+          child: InkWell(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      ScreenAdapter.width(34), 0, ScreenAdapter.width(10), 0),
+                  child: const Icon(Icons.search, color: Colors.black54),
+                ),
+                Text(
+                  controller.keywords != null ?
+                  controller.keywords! :
+                  '',
                   style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: ScreenAdapter.fontSize(32)))
-            ],
+                    color: Colors.black54,
+                    fontSize: ScreenAdapter.fontSize(32)
+                  )
+                )
+              ],
+            ),
+            onTap: (){
+              Get.offAndToNamed('/search');
+            },
           ),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Stack(
+      body: Obx(() => controller.plist.isNotEmpty
+      ? Stack(
         children: [_productListWidget(), _subHeaderWidget()],
+      )
+      : _progressIndicator()
       ),
     );
   }

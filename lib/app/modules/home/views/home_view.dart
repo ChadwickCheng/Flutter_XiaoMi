@@ -23,30 +23,35 @@ class HomeView extends GetView<HomeController> {
           color: Colors.white,
         ),
         leadingWidth:controller.flag.value?ScreenAdapter.width(40):ScreenAdapter.width(140) ,
-        title: AnimatedContainer(
-          width: controller.flag.value?ScreenAdapter.width(800):ScreenAdapter.width(620),
-          height: ScreenAdapter.height(96),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(230, 252, 243, 236),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          duration: const Duration(milliseconds: 600),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(ScreenAdapter.width(34), 0, ScreenAdapter.width(10), 0),
-                child: const Icon(Icons.search),
-              ),
-              Text(
-                "手机",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: ScreenAdapter.fontSize(32)
+        title: InkWell(
+          child: AnimatedContainer(
+            width: controller.flag.value?ScreenAdapter.width(800):ScreenAdapter.width(620),
+            height: ScreenAdapter.height(96),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(230, 252, 243, 236),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            duration: const Duration(milliseconds: 600),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(ScreenAdapter.width(34), 0, ScreenAdapter.width(10), 0),
+                  child: const Icon(Icons.search, color: Colors.black54),
+                ),
+                Text(
+                  "手机",
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: ScreenAdapter.fontSize(32)
+                  )
                 )
-              )
-            ],
+              ],
+            ),
           ),
+          onTap: (){
+            Get.toNamed('/search');
+          },
         ),
         centerTitle: true,
         backgroundColor: controller.flag.value?Colors.white:Colors.transparent,

@@ -15,6 +15,12 @@ class ProductListController extends GetxController {
   HttpsClient httpsClient = HttpsClient();
   String sort = "";
 
+  // 从搜索过来的数据
+  String? keywords = Get.arguments['keywords'];
+  // 从分类过来的数据
+  String? cid = Get.arguments['cid'];
+  String apiUri="";
+
   /*二级导航数据*/
   List subHeaderList = [
     {
@@ -91,10 +97,14 @@ class ProductListController extends GetxController {
   void getPlistData() async {
     if (flag && hasData.value) {
       flag=false; // 防止重复请求
-      print(
-          "api/plist?cid=${Get.arguments["cid"]}&page=$page&pageSize=$pageSize");
-      var response = await httpsClient.get(
-          "api/plist?cid=${Get.arguments["cid"]}&page=$page&pageSize=$pageSize");
+      if(cid!=null){
+        apiUri="api/plist?cid=$cid&page=$page&pageSize=$pageSize&sort=$sort";
+      }else{
+        apiUri="api/plist?search=$keywords&page=$page&pageSize=$pageSize&sort=$sort";
+      }
+      // print(
+      //     "api/plist?cid=${Get.arguments["cid"]}&page=$page&pageSize=$pageSize");
+      var response = await httpsClient.get(apiUri);
       if (response != null) {
         var plistTemp = PlistModel.fromJson(response.data);
         //注意:拼接数据
