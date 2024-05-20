@@ -10,6 +10,59 @@ import "./third_page_view.dart";
 
 class ProductContentView extends GetView<ProductContentController> {
   const ProductContentView({Key? key}) : super(key: key);
+
+  //showBottomAttr
+  void showBottomAttr(){
+    Get.bottomSheet(
+      Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.all(ScreenAdapter.width(20)),
+                  width: double.infinity,
+                  height: ScreenAdapter.height(1200),
+                  child: ListView(
+                    children: 
+                    controller.pcontent.value.attr!.map((v){
+                      return Wrap(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(
+                                top: ScreenAdapter.height(20),
+                                left: ScreenAdapter.width(20)),
+                            width: ScreenAdapter.width(1040),
+                            child: Text("${v.cate}",
+                                style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(
+                                top: ScreenAdapter.height(20),
+                                left: ScreenAdapter.width(20)),
+                            width: ScreenAdapter.width(1040),
+                            child: Wrap(
+                              children: v.list!.map((value){
+                                  return  Container(
+                                  margin: EdgeInsets.all(ScreenAdapter.width(20)),
+                                  child: Chip(
+                                      padding: EdgeInsets.only(left: ScreenAdapter.width(20),right: ScreenAdapter.width(20)),
+                                    backgroundColor:  const Color.fromARGB(31, 223, 213, 213),
+                                    label: Text(value)
+                                  ),
+                                );
+                              }).toList()                              
+                             
+                            ),
+                          )
+                          
+                        
+                        ],
+                      );                      
+                    
+                    }).toList()
+                    
+                  
+                  ),
+                ));
+              
+  }
   Widget _appBar(BuildContext context){
     return Obx(
             () => AppBar(
@@ -189,7 +242,7 @@ class ProductContentView extends GetView<ProductContentController> {
         controller: controller.scrollController,
         child: Column(
           children: [
-            FirstPageView(),
+            FirstPageView(showBottomAttr),
             SecondPageView(),
             ThirdPageView(),
           ],
@@ -241,7 +294,7 @@ class ProductContentView extends GetView<ProductContentController> {
                         )
                       ),
                       onPressed: () { 
-
+                          showBottomAttr();
                        },
                       child: Text("加入购物车"),
                     ),
@@ -264,7 +317,7 @@ class ProductContentView extends GetView<ProductContentController> {
                         )
                       ),
                       onPressed: () { 
-
+                          showBottomAttr();
                        },
                       child: Text("立即购买"),
                     ),
