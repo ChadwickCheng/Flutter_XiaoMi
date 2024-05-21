@@ -32,6 +32,7 @@ class PcontentItemModel {
   List<PcontentAttrModel>? attr;
   String? subTitle;
   int? salecount;
+  String? specs;
 
   PcontentItemModel(
       {this.sId,
@@ -45,6 +46,7 @@ class PcontentItemModel {
       this.status,
       this.pic,
       this.content,
+      this.specs,
       this.cname,
       this.attr,
       this.subTitle,
@@ -62,6 +64,7 @@ class PcontentItemModel {
     status = json['status'];
     pic = json['pic'];
     content = json['content'];
+    specs = json['specs'];
     cname = json['cname'];
     if (json['attr'] != null) {
       attr = <PcontentAttrModel>[];

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,8 +15,7 @@ class ProductContentView extends GetView<ProductContentController> {
 
   //bottomSheet更新流数据需要使用 GetBuilder 来渲染数据
   void showBottomAttr() {
-    Get.bottomSheet(
-    GetBuilder<ProductContentController>(
+    Get.bottomSheet(GetBuilder<ProductContentController>(
       init: controller,
       builder: (controller) {
         return Container(
@@ -111,10 +112,27 @@ class ProductContentView extends GetView<ProductContentController> {
                             Scrollable.ensureVisible(
                                 controller.gk2.currentContext as BuildContext,
                                 duration: const Duration(milliseconds: 100));
+                            //修正
+                            Timer.periodic(const Duration(milliseconds: 101),
+                                (timer) {
+                              controller.scrollController.jumpTo(
+                                  controller.scrollController.position.pixels -
+                                      ScreenAdapter.height(120));
+                              timer.cancel();
+                            });
                           } else {
                             Scrollable.ensureVisible(
                                 controller.gk3.currentContext as BuildContext,
-                                duration: const Duration(milliseconds: 500));
+                                duration: const Duration(milliseconds: 100));
+                            //修正
+
+                            Timer.periodic(Duration(milliseconds: 101),
+                                (timer) {
+                              controller.scrollController.jumpTo(
+                                  controller.scrollController.position.pixels -
+                                      ScreenAdapter.height(120));
+                              timer.cancel();
+                            });
                           }
                         },
                         child: Column(
@@ -223,13 +241,37 @@ class ProductContentView extends GetView<ProductContentController> {
     );
   }
 
+  Widget _subHeader() {
+    return Obx(() => Container(
+          color: Colors.white,
+          child: Row(
+              children: controller.subTabsList.map((value) {
+            return Expanded(
+                child: InkWell(
+              onTap: () {
+                controller.changeSelectedSubTabsIndex(value["id"]);
+              },
+              child: Container(
+                height: ScreenAdapter.height(120),
+                alignment: Alignment.center,
+                child: Text("${value["title"]}",
+                    style: TextStyle(
+                        color: controller.selectedSubTabsIndex == value["id"]
+                            ? Colors.red
+                            : Colors.black87)),
+              ),
+            ));
+          }).toList()),
+        ));
+  }
+
   Widget _body() {
     return SingleChildScrollView(
       controller: controller.scrollController,
       child: Column(
         children: [
           FirstPageView(showBottomAttr),
-          SecondPageView(),
+          SecondPageView(_subHeader),
           ThirdPageView(),
         ],
       ),
@@ -322,6 +364,14 @@ class ProductContentView extends GetView<ProductContentController> {
         children: [
           _body(),
           _bottom(),
+          Obx(() => controller.showSubHeaderTabs.value
+              ? Positioned(
+                  left: 0,
+                  top: ScreenAdapter.getStatusBarHeight() +
+                      ScreenAdapter.height(118),
+                  right: 0,
+                  child: _subHeader())
+              : const Text("")),
         ],
       ),
     );
