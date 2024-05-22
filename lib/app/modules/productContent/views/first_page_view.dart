@@ -11,7 +11,6 @@ class FirstPageView extends GetView {
   FirstPageView(this.showBottomAttr,{Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // 刚开始数据为空，所以第一次载入会先显示报错，使用三目运算符判断是否有数据
     return Obx(() => controller.pcontent.value.sId!=null? Container(
       padding: EdgeInsets.all(ScreenAdapter.width(20)),
       key: controller.gk1,
@@ -78,20 +77,20 @@ class FirstPageView extends GetView {
             padding: EdgeInsets.only(top: ScreenAdapter.height(20)),
             child: InkWell(
               onTap: () {
-                showBottomAttr();
+                showBottomAttr(1);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  Obx(()=>Row(
                     children: [
-                      Text("已选", style: TextStyle(fontWeight: FontWeight.bold)),
+                      const Text("已选", style: TextStyle(fontWeight: FontWeight.bold)),
                       Padding(
                         padding: EdgeInsets.only(left: ScreenAdapter.width(20)),
-                        child: const Text("115，黑色，XL，1件"),
+                        child:  Text(controller.selectedAttr.value),
                       )
                     ],
-                  ),
+                  )),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: Colors.black38,

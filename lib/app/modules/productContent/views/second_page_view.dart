@@ -14,11 +14,11 @@ class SecondPageView extends GetView {
       key: controller.gk2,
       alignment: Alignment.center,
       width: ScreenAdapter.width(1080),      
-      child: Column(
+      child: Obx(()=> controller.pcontent.value.content!=null?Column(
         children: [
           subHeader(),
 
-          Obx(()=>controller.selectedSubTabsIndex==1?Container(
+          controller.selectedSubTabsIndex.value==1?SizedBox(
               width: ScreenAdapter.width(1080),
               child: Html(
                     data: controller.pcontent.value.content,
@@ -44,9 +44,9 @@ class SecondPageView extends GetView {
                       ),
                     },
                   ),
-          ))
+          )
         ],
-      ),
+      ):const Text("")),
     );
   }
 }
