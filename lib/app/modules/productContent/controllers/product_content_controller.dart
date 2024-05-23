@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../services/screenAdapter.dart';
 import '../../../models/pcontent_model.dart';
 import '../../../services/httpsClient.dart';
+import '../../../services/cartServices.dart';
 
 class ProductContentController extends GetxController {
   final ScrollController scrollController = ScrollController();
@@ -212,41 +213,19 @@ class ProductContentController extends GetxController {
     }
   }
 
-  /*   
-    [{cate: 颜色, list: [土豪金, 玫瑰红, 磨砂黑]}, {cate: 内存, list: [16G, 32G, 64G]}]
-
-
-    [
-      {
-        cate: 颜色, 
-        list: [
-          {
-            title:土豪金,
-            checked:true
-          },
-          {
-            title:玫瑰红,
-            checked:false
-          },{
-            title:磨砂黑,
-            checked:false
-
-          }
-        ]
-      },
-      {cate: 内存, 
-      list: [
-          {
-             title:16G,
-            checked:true        
-          },
-           {
-             title:32G,
-            checked:false        
-          }
-      ]}
-
-    ]
-  */
+  //加入购物车
+  void addCart() {
+    setSelectedAttr();
+    CartServices.addCart(pcontent.value,selectedAttr.value,buyNum.value);    
+    Get.back();
+    Get.snackbar("提示?","加入购物车成功");
+  }
+  //立即购买
+  void buy() {
+    setSelectedAttr();
+    print("立即购买");
+    Get.back();
+  }
+ 
 
 }

@@ -9,6 +9,8 @@ import '../modules/search/views/search_view.dart';
 import '../modules/tabs/bindings/tabs_binding.dart';
 import '../modules/tabs/views/tabs_view.dart';
 
+import '../modules/cart/views/cart_view.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -28,16 +30,20 @@ class AppPages {
       binding: ProductListBinding(),
     ),
     GetPage(
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 100),
       name: _Paths.SEARCH,
       page: () => const SearchView(),
       binding: SearchBinding(),
-      transition: Transition.fadeIn,
-      transitionDuration: const Duration(milliseconds: 100),
     ),
     GetPage(
       name: _Paths.PRODUCT_CONTENT,
       page: () => const ProductContentView(),
       binding: ProductContentBinding(),
+    ),
+    GetPage(
+      name: _Paths.Cart,
+      page: () => CartView(),    
     ),
   ];
 }

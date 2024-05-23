@@ -14,22 +14,10 @@ import './cart_item_num_view.dart';
 class ProductContentView extends GetView<ProductContentController> {
   const ProductContentView({Key? key}) : super(key: key);
 
-  void _addCart() {
-    controller.setSelectedAttr();
-    print("加入购物车");
-    Get.back();
-  }
-
-  void _buy() {
-    controller.setSelectedAttr();
-    print("立即购买");
-    Get.back();
-  }
-
   //bottomSheet更新流数据需要使用 GetBuilder 来渲染数据
   //action 1点击的是筛选属性   2 点击的是加入购物车   3 表示点击的是立即购买
   void showBottomAttr(int action) {
-    Get.bottomSheet(GetBuilder<ProductContentController>(
+    Get.bottomSheet(GetBuilder<ProductContentController>(     
       init: controller,
       builder: (controller) {
         return Container(
@@ -128,7 +116,7 @@ class ProductContentView extends GetView<ProductContentController> {
                                                     BorderRadius.circular(
                                                         10)))),
                                     onPressed: () {
-                                      _addCart();
+                                      controller.addCart();
                                     },
                                     child: Text("加入购物车"),
                                   ),
@@ -155,7 +143,8 @@ class ProductContentView extends GetView<ProductContentController> {
                                                     BorderRadius.circular(
                                                         10)))),
                                     onPressed: () {
-                                      _buy();
+                                  
+                                      controller.buy();
                                     },
                                     child: Text("立即购买"),
                                   ),
@@ -187,9 +176,10 @@ class ProductContentView extends GetView<ProductContentController> {
                                                         10)))),
                                     onPressed: () {
                                       if (action == 2) {
-                                        _addCart();
-                                      } else {
-                                        _buy();
+                                       
+                                        controller.addCart();
+                                      } else {                                       
+                                        controller.buy();
                                       }
                                     },
                                     child: Text("确定"),
@@ -431,7 +421,11 @@ class ProductContentView extends GetView<ProductContentController> {
               SizedBox(
                 width: ScreenAdapter.width(200),
                 height: ScreenAdapter.height(160),
-                child: Column(
+                child: InkWell(
+                  onTap: (){
+                    Get.toNamed("/cart");
+                  },
+                  child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(Icons.shopping_cart),
@@ -440,6 +434,7 @@ class ProductContentView extends GetView<ProductContentController> {
                       style: TextStyle(fontSize: ScreenAdapter.fontSize(32)),
                     )
                   ],
+                ),
                 ),
               ),
               Expanded(

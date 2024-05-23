@@ -2,17 +2,26 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import '../../../services/screenAdapter.dart';
+import '../controllers/cart_controller.dart';
 
 class CartItemNumView extends GetView {
-  const CartItemNumView({Key? key}) : super(key: key);
+  @override
+  final CartController controller = Get.find();
+  final Map cartItem;
+  CartItemNumView(this.cartItem,{Key? key}) : super(key: key);
 
   Widget _left(){
-      return Container(
+      return InkWell(
+        onTap: (){
+            controller.decCartNum(cartItem);
+        },
+        child: Container(
             alignment: Alignment.center,
             width:ScreenAdapter.width(80) ,
-            height: ScreenAdapter.height(64),
+            height: ScreenAdapter.height(80),
             child: const Text("-"),
-          );
+          ),
+      );
   }
     Widget _center(){
       return Container(
@@ -25,24 +34,29 @@ class CartItemNumView extends GetView {
       ),
             alignment: Alignment.center,
             width:ScreenAdapter.width(80) ,
-            height: ScreenAdapter.height(64),
-            child: const Text("0"),
+            height: ScreenAdapter.height(80),
+            child: Text("${cartItem["count"]}"),
           );
   }
     Widget _right(){
-      return Container(
+      return InkWell(
+        onTap: (){
+          controller.incCartNum(cartItem);
+        },
+        child: Container(
             alignment: Alignment.center,
             width:ScreenAdapter.width(80) ,
-             height: ScreenAdapter.height(64),
+             height: ScreenAdapter.height(80),
             child: const Text("+"),
-          );
+          ),
+      );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: ScreenAdapter.width(244),
-      height: ScreenAdapter.height(60),
+      height: ScreenAdapter.height(80),
       decoration: BoxDecoration(
         border: Border.all(
           width: ScreenAdapter.width(2),
