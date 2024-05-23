@@ -57,11 +57,13 @@ class CartView extends GetView {
                                 children: [
                                   Row(
                                     children: [
-                                      Checkbox(
-                                          value: true,
+                                     Obx(()=> Checkbox(
+                                          activeColor: Colors.red,
+                                          value: controller.checkedAllBox.value,
                                           onChanged: (value) {
                                             print(value);
-                                          }),
+                                            controller.checkedAllFunc(value);
+                                     })),
                                       const Text("全选")
                                     ],
                                   ),

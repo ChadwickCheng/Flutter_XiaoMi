@@ -4,9 +4,12 @@ import 'package:get/get.dart';
 import '../../../services/screenAdapter.dart';
 import '../../../services/httpsClient.dart';
 import './cart_item_num_view.dart';
+import '../controllers/cart_controller.dart';
 class CartItemView extends GetView {
+  @override
+  final CartController controller = Get.find();
   final Map cartItem;
-  const CartItemView(this.cartItem,{Key? key}) : super(key: key);
+  CartItemView(this.cartItem,{Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,7 +18,7 @@ class CartItemView extends GetView {
           color: Colors.white,
           border: Border(
               bottom: BorderSide(          
-                    color: Color.fromARGB(178, 240, 236, 236),
+                    color: const Color.fromARGB(178, 240, 236, 236),
                     width: ScreenAdapter.height(2))),
           ),
       child: Row(
@@ -23,7 +26,11 @@ class CartItemView extends GetView {
           SizedBox(
             width: ScreenAdapter.width(100),
             child: Checkbox(
-                activeColor: Colors.red, value: false, onChanged: (value) {}),
+                activeColor: Colors.red, 
+                value: cartItem["checked"], 
+                onChanged: (value) {
+                  controller.checkCartItem(cartItem);
+                }),
           ),
           Container(
             width: ScreenAdapter.width(260),
