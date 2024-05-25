@@ -48,8 +48,13 @@ class UserView extends GetView<UserController> {
                   ),
                 ),
                 SizedBox(width: ScreenAdapter.width(40)),
-                Text("登录/注册",
+                InkWell(
+                  onTap: (){
+                    Get.toNamed("/code-login-step-one");
+                  },
+                  child: Text("登录/注册",
                     style: TextStyle(fontSize: ScreenAdapter.fontSize(46))),
+                ),
                 SizedBox(width: ScreenAdapter.width(40)),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -311,6 +316,7 @@ class UserView extends GetView<UserController> {
                 ),
                 GridView.count(
                   shrinkWrap: true, //收缩
+                  physics: const NeverScrollableScrollPhysics() ,    //禁止滑动                
                   crossAxisCount: 4,
                   childAspectRatio: 1.253,
                   children: [
