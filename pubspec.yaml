@@ -28,6 +28,9 @@ flutter:
     - family: ityingIcon   #指定一个字体名 根据自己的需求定义
       fonts:
         - asset: assets/fonts/iconfont.ttf
+    - family: userIcon   #指定一个字体名 根据自己的需求定义
+      fonts:
+        - asset: assets/fonts/userIconfont.ttf     
   assets:
     - assets/images/xiaomiBanner.png
     - assets/images/2.0x/xiaomiBanner.png
@@ -41,3 +44,12 @@ flutter:
     - assets/images/service.png
     - assets/images/2.0x/service.png
     - assets/images/3.0x/service.png
+    - assets/images/user.png
+    - assets/images/2.0x/user.png
+    - assets/images/3.0x/user.png
+    - assets/images/user_ad1.png
+    - assets/images/2.0x/user_ad1.png
+    - assets/images/3.0x/user_ad1.png    
+    - assets/images/user_ad2.png
+    - assets/images/2.0x/user_ad2.png
+    - assets/images/3.0x/user_ad2.png   
