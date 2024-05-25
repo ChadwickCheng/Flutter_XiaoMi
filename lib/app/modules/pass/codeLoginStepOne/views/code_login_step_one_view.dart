@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import '../../../../widget/passButton.dart';
+import '../../../../../app/models/message.dart';
+import '../../../../../app/widget/passButton.dart';
 import '../../../../widget/userAgreement.dart';
 import '../../../../widget/passTextField.dart';
 import '../controllers/code_login_step_one_controller.dart';
@@ -26,6 +27,7 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
           const Logo(),
           //输入手机号
           PassTextFiled(
+            controller: controller.telController,
               hintText: "请输入手机号",
               onChanged: (value) {
                 print(value);
@@ -34,20 +36,32 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
           //用户协议
           const UserAgreement(),
           //登录按钮
-          PassButton(text: "获取验证码", onPressed: (){
-            print("获取验证码");
-            Get.toNamed("/code-login-step-two");
-          }),
+          PassButton(text: "获取验证码", onPressed: () async{           
+            if (!GetUtils.isPhoneNumber(controller.telController.text) ||
+                  controller.telController.text.length != 11) {
+                Get.snackbar("提示信息!", "手机号格式不合法");
+            }else{
+                MessageModel result=await controller.sendCode();
+                if(result.success){                   
+                  Get.toNamed("/code-login-step-two",arguments: {
+                    "tel":controller.telController.text
+                  });
+                }else{
+                  Get.snackbar("提示信息!", result.message);
+                }
+            }
 
+          }),
+         SizedBox(height: ScreenAdapter.height(40)),
            Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextButton(onPressed: (){
-
-              }, child: Text("忘记密码")),
+                Get.toNamed("/register-step-one");
+              }, child: Text("新用户注册")),
               TextButton(onPressed: (){
                   Get.toNamed("/pass-login");
-              }, child: Text("其他登录方式"))
+              }, child: Text("账户密码登录"))
             ],
           )
         

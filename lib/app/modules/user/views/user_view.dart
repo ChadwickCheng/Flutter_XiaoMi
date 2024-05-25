@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../services/screenAdapter.dart';
 
+import '../../../widget/passButton.dart';
 import '../controllers/user_controller.dart';
 
 import '../../../services/ityingFonts.dart';
@@ -35,7 +36,40 @@ class UserView extends GetView<UserController> {
         padding: EdgeInsets.all(ScreenAdapter.height(28)),
         children: [
           //用户头像 登录注册
-          Container(
+          Obx(()=>
+          controller.isLogin.value?
+          SizedBox(
+            child: Row(
+              children: [
+                SizedBox(width: ScreenAdapter.width(40)),
+                SizedBox(
+                  height: ScreenAdapter.height(150),
+                  width: ScreenAdapter.height(150),
+                  child: CircleAvatar(
+                    radius: ScreenAdapter.width(75),
+                    backgroundImage: const AssetImage("assets/images/user.png"),
+                  ),
+                ),
+                SizedBox(width: ScreenAdapter.width(40)),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${controller.userInfo.value.username}",
+                    style: TextStyle(fontSize: ScreenAdapter.fontSize(46))),
+                    SizedBox(height: ScreenAdapter.height(20)),
+                      Text("普通会员",
+                    style: TextStyle(fontSize: ScreenAdapter.fontSize(46)))
+                  ],
+                ),
+                SizedBox(width: ScreenAdapter.width(40)),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: ScreenAdapter.fontSize(34),
+                  color: Colors.black54,
+                )
+              ],
+            ),
+          ):SizedBox(
             child: Row(
               children: [
                 SizedBox(width: ScreenAdapter.width(40)),
@@ -63,9 +97,94 @@ class UserView extends GetView<UserController> {
                 )
               ],
             ),
-          ),
+          ))
+          ,
           // 用户资金信息
-          Container(
+          Obx(()=>controller.isLogin.value==true?Container(
+            height: ScreenAdapter.height(170),
+            margin: EdgeInsets.only(top: ScreenAdapter.height(50)),
+            child: Row(
+              children: [
+               
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${controller.userInfo.value.gold}",
+                          style: TextStyle(
+                              fontSize: ScreenAdapter.fontSize(52),
+                              ),
+                        ),
+                        Text("米金",
+                            style: TextStyle(
+                                fontSize: ScreenAdapter.fontSize(34),
+                                color: Colors.black45)),
+                      ],
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${controller.userInfo.value.coupon}",
+                          style: TextStyle(
+                              fontSize: ScreenAdapter.fontSize(52)
+                              ),
+                        ),
+                        Text("优惠券",
+                            style: TextStyle(
+                                fontSize: ScreenAdapter.fontSize(34),
+                                color: Colors.black45))
+                      ],
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("${controller.userInfo.value.redPacket}",
+                            style: TextStyle(
+                                fontSize: ScreenAdapter.fontSize(52)
+                               )),
+                        Text("红包",
+                            style: TextStyle(
+                                fontSize: ScreenAdapter.fontSize(34),
+                                color: Colors.black45))
+                      ],
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("${controller.userInfo.value.quota}",
+                            style: TextStyle(
+                                fontSize: ScreenAdapter.fontSize(52)
+                                )),
+                        Text("最高额度",
+                            style: TextStyle(
+                                fontSize: ScreenAdapter.fontSize(34),
+                                color: Colors.black45))
+                      ],
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Icon(Icons.bookmarks_outlined),
+                        Text("钱包",
+                            style: TextStyle(
+                                fontSize: ScreenAdapter.fontSize(34),
+                                color: Colors.black45))
+                      ],
+                    ))
+              ],
+            ),
+          ):Container(
             height: ScreenAdapter.height(170),
             margin: EdgeInsets.only(top: ScreenAdapter.height(50)),
             child: Row(
@@ -149,7 +268,7 @@ class UserView extends GetView<UserController> {
                     ))
               ],
             ),
-          ),
+          )),
           //广告
           Container(
             alignment: Alignment.center,
@@ -398,6 +517,10 @@ class UserView extends GetView<UserController> {
                   borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
             ),
           ),
+           PassButton(
+              text: "退出登录",onPressed: (){
+                controller.loginOut();
+              },)
         ],
       ),
     );

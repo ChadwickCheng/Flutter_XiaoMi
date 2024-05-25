@@ -11,7 +11,8 @@ import 'dart:io';
 void main() {
   // 禁用日志
   if (Platform.isAndroid) {
-    const bool.fromEnvironment('FLUTTER_DEBUG', defaultValue: false);
+    // const bool.fromEnvironment('FLUTTER_DEBUG', defaultValue: false);
+    debugPrint = (String? message, {int? wrapWidth}) {};
   }
   
 
