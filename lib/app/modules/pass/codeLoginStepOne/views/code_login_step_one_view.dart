@@ -43,7 +43,8 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
             }else{
                 MessageModel result=await controller.sendCode();
                 if(result.success){                   
-                  Get.toNamed("/code-login-step-two",arguments: {
+                  //替换路由
+                  Get.offAndToNamed("/code-login-step-two",arguments: {
                     "tel":controller.telController.text
                   });
                 }else{
@@ -60,7 +61,10 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
                 Get.toNamed("/register-step-one");
               }, child: Text("新用户注册")),
               TextButton(onPressed: (){
-                  Get.toNamed("/pass-login");
+                  // Get.toNamed("/pass-login");
+                  //替换路由
+                   Get.offAndToNamed("/pass-login");
+
               }, child: Text("账户密码登录"))
             ],
           )

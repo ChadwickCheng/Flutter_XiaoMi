@@ -53,11 +53,8 @@ class PassLoginView extends GetView<PassLoginController> {
                   Get.snackbar("提示信息!", "密码长度不能小于6位");
                 } else {
                   MessageModel result = await controller.doLogin();
-                  if(result.success){
-                      //执行跳转  回到根
-                      Get.offAllNamed("/tabs",arguments: {
-                        "initialPage":4   //注册完成后会加载tabs第五个页面
-                      });
+                  if(result.success){                                           
+                       Get.back();
                   }else{
                     Get.snackbar("提示信息!",result.message);
                   }

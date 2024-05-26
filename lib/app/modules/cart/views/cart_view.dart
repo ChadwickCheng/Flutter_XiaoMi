@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import '../../../services/screenAdapter.dart';
 import '../controllers/cart_controller.dart';
 import "cart_item_view.dart";
+
 //注意CartView在多个地方调用了  需要手动获取CartController
 class CartView extends GetView {
-
   @override
-  final CartController controller=Get.put(CartController());  
+  final CartController controller = Get.put(CartController());
   CartView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,9 @@ class CartView extends GetView {
           actions: [TextButton(onPressed: () {}, child: const Text("编辑"))],
         ),
         body: GetBuilder<CartController>(
-            initState: (state){
-               //获取购物车数据
-               controller.getCartListData();   
+            initState: (state) {
+              //获取购物车数据
+              controller.getCartListData();
             },
             init: controller,
             builder: (controller) {
@@ -57,13 +57,13 @@ class CartView extends GetView {
                                 children: [
                                   Row(
                                     children: [
-                                     Obx(()=> Checkbox(
+                                      Obx(() => Checkbox(
                                           activeColor: Colors.red,
                                           value: controller.checkedAllBox.value,
                                           onChanged: (value) {
                                             print(value);
                                             controller.checkedAllFunc(value);
-                                     })),
+                                          })),
                                       const Text("全选")
                                     ],
                                   ),
@@ -79,20 +79,23 @@ class CartView extends GetView {
                                       ElevatedButton(
                                           style: ButtonStyle(
                                               backgroundColor:
-                                                  WidgetStateProperty.all(
+                                                  MaterialStateProperty.all(
                                                       const Color.fromRGBO(
                                                           255, 165, 0, 0.9)),
                                               foregroundColor:
-                                                  WidgetStateProperty.all(
+                                                  MaterialStateProperty.all(
                                                       Colors.white),
-                                              shape: WidgetStateProperty.all(
+                                              shape: MaterialStateProperty.all(
                                                   // CircleBorder()
                                                   RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10)))),
-                                          onPressed: () {},
-                                          child: Text("结算"))
+                                          onPressed: () {
+                                            //判断用户有没有登录
+                                            controller.checkout();
+                                          },
+                                          child: const Text("结算"))
                                     ],
                                   )
                                 ],

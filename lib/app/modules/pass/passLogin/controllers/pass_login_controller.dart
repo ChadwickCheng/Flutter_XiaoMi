@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../../models/message.dart';
 import '../../../../services/httpsClient.dart';
 import '../../../../services/storage.dart';
-
+import '../../../user/controllers/user_controller.dart';
 class PassLoginController extends GetxController {
  TextEditingController telController=TextEditingController();
  TextEditingController passController=TextEditingController();
+   UserController userController =Get.find<UserController>();
   HttpsClient httpsClient = HttpsClient();  
   @override
   void onInit() {
@@ -15,6 +16,8 @@ class PassLoginController extends GetxController {
 
   @override
   void onClose() {
+    //状态管理 更新userController.getUserInfo
+    userController.getUserInfo();
     super.onClose();
   }
 
