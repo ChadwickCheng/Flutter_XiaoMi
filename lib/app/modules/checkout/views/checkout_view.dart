@@ -57,10 +57,13 @@ class CheckoutView extends GetView<CheckoutController> {
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
-          child: const ListTile(
-            leading: Icon(Icons.add_location),
-            title: Text("增加收货地址"),
-            trailing: Icon(Icons.navigate_next),
+          child:  ListTile(
+            onTap: (){
+              Get.toNamed("/address-list");
+            },
+            leading: const Icon(Icons.add_location),
+            title: const Text("新建收货地址"),
+            trailing: const Icon(Icons.navigate_next),
           ),
         ),
         SizedBox(
