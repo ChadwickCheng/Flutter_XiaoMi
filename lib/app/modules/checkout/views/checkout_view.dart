@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import '../../../../app/services/screenAdapter.dart';
-
+import '../../../services/screenAdapter.dart';
+import '../../../services/httpsClient.dart';
 import '../controllers/checkout_controller.dart';
 
 class CheckoutView extends GetView<CheckoutController> {
-  Widget _checkoutItem() {
+  Widget _checkoutItem(value) {
     return Container(
       padding: EdgeInsets.only(
           top: ScreenAdapter.height(20),
@@ -19,25 +19,25 @@ class CheckoutView extends GetView<CheckoutController> {
             width: ScreenAdapter.width(200),
             height: ScreenAdapter.width(200),
             padding: EdgeInsets.all(ScreenAdapter.width(20)),
-            child: Image.network("https://www.itying.com/images/shouji.png",
+            child: Image.network(HttpsClient.replaeUri(value["pic"]),
                 fit: BoxFit.fitHeight),
           ),
           Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "小米5A",
+              Text(
+                "${value["title"]}",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: ScreenAdapter.height(10)),
-              const Text("白色 128GB"),
+              Text("${value["selectedAttr"]}",),
               SizedBox(height: ScreenAdapter.height(10)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("￥121", style: TextStyle(color: Colors.red)),
-                  Text("x2", style: TextStyle(color: Colors.black87))
+                children:  [
+                  Text("￥${value["price"]}", style: TextStyle(color: Colors.red)),
+                  Text("x${value["count"]}", style: TextStyle(color: Colors.black87))
                 ],
               )
             ],
@@ -95,9 +95,14 @@ class CheckoutView extends GetView<CheckoutController> {
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
-          child: Column(
-            children: [_checkoutItem(), _checkoutItem(), _checkoutItem(), _checkoutItem(), _checkoutItem()],
-          ),
+          child: Obx(() => controller.checkoutList.isNotEmpty
+              ? Column(
+                  children: 
+                  controller.checkoutList.map((value){
+                      return  _checkoutItem(value);
+                  }).toList()                 
+                )
+              : Text("")),
         ),
         SizedBox(
           height: ScreenAdapter.height(40),
@@ -209,7 +214,7 @@ class CheckoutView extends GetView<CheckoutController> {
         centerTitle: true,
       ),
       body: Stack(
-        children: [_body(),_bottom()],
+        children: [_body(), _bottom()],
       ),
     );
   }

@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import '../../../services/screenAdapter.dart';
+import '../../../../app/services/screenAdapter.dart';
 import '../../../models/pcontent_model.dart';
 import '../../../services/httpsClient.dart';
 import '../../../services/cartServices.dart';
+import '../../../services/storage.dart';
+import '../../../services/userServices.dart';
 
 class ProductContentController extends GetxController {
   final ScrollController scrollController = ScrollController();
@@ -216,16 +218,45 @@ class ProductContentController extends GetxController {
   //加入购物车
   void addCart() {
     setSelectedAttr();
-    CartServices.addCart(pcontent.value,selectedAttr.value,buyNum.value);    
+    CartServices.addCart(pcontent.value, selectedAttr.value, buyNum.value);
     Get.back();
-    Get.snackbar("提示?","加入购物车成功");
+    Get.snackbar("提示?", "加入购物车成功");
   }
+
   //立即购买
-  void buy() {
+  void buy() async {
     setSelectedAttr();
-    print("立即购买");
     Get.back();
+    bool loginState = await isLogin();
+    if (loginState) {
+      //保存商品信息
+      List tempList = [];
+      tempList.add({
+        "_id": pcontent.value.sId,
+        "title": pcontent.value.title,
+        "price": pcontent.value.price,
+        "selectedAttr": selectedAttr.value,
+        "count": buyNum.value,
+        "pic": pcontent.value.pic,
+        "checked": true
+      });
+      Storage.setData("checkoutList", tempList);
+      //执行跳转
+      Get.toNamed("/checkout");
+    } else {
+      //执行跳转
+      Get.toNamed("/code-login-step-one");
+      Get.snackbar("提示信息!", "您还有没有登录，请先登录");
+    }
   }
- 
+
+  //判断用户有没有登录
+  Future<bool> isLogin() async {
+    return await UserServices.getUserLoginState();
+  }
+
+  //判断用户有没有登录
+
+  //获取要结算的商品
 
 }

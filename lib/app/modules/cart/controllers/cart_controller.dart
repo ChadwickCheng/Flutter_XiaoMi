@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../../../app/services/storage.dart';
 import '../../../services/cartServices.dart';
 import '../../../services/userServices.dart';
 
@@ -6,6 +7,7 @@ class CartController extends GetxController {
   //TODO: Implement CartController
   RxList cartList = [].obs;
   RxBool checkedAllBox = false.obs;
+  RxBool isEdit = false.obs;
   @override
   void onInit() {
     print("cart init");
@@ -119,12 +121,14 @@ class CartController extends GetxController {
 
   checkout() async {
     bool loginState = await isLogin();
-    List checkListData=getCheckListData();
+    List checkListData = getCheckListData();
     if (loginState) {
       //判断购物车里面有没有要结算的商品
-      if(checkListData.isNotEmpty){
-            Get.toNamed("/checkout");
-      }else{
+      if (checkListData.isNotEmpty) {
+        //保存要结算的商品
+        Storage.setData("checkoutList", checkListData);
+        Get.toNamed("/checkout");
+      } else {
         Get.snackbar("提示信息!", "购物车中没有要结算的商品");
       }
     } else {
@@ -132,5 +136,25 @@ class CartController extends GetxController {
       Get.toNamed("/code-login-step-one");
       Get.snackbar("提示信息!", "您还有没有登录，请先登录");
     }
+  }
+  //改变edit属性
+  changeEditState(){
+    isEdit.value=!isEdit.value;
+    update();
+  }
+  //删除购物车数据
+
+  deleteCartData(){
+    List tempList = [];
+    for (var i = 0; i < cartList.length; i++) {
+      if (cartList[i]["checked"] == false) {
+        tempList.add(cartList[i]);
+      }
+    }    
+    //把没有选中的商品保存在cart里面
+    cartList.value = tempList;
+    CartServices.setCartList(tempList);
+    update();
+
   }
 }

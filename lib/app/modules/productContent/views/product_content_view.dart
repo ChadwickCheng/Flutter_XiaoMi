@@ -60,7 +60,11 @@ class ProductContentView extends GetView<ProductContentController> {
                                   backgroundColor: value["checked"] == true
                                       ? Colors.red
                                       : const Color.fromARGB(31, 223, 213, 213),
-                                  label: Text(value["title"])),
+                                  label: Text(value["title"],style: TextStyle(
+                                    color: value["checked"] == true
+                                      ? Colors.white
+                                      : Colors.black87
+                                  ),)),
                             ),
                           );
                         }).toList()),
