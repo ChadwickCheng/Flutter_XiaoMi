@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import '../../../../app/services/httpsClient.dart';
 
 import '../../../services/screenAdapter.dart';
 import '../controllers/order_controller.dart';
@@ -18,194 +19,72 @@ class OrderView extends GetView<OrderController> {
       ),
       body: Stack(
         children: [
-          ListView(
-            padding: EdgeInsets.fromLTRB(ScreenAdapter.width(20), ScreenAdapter.height(140), ScreenAdapter.width(20), ScreenAdapter.width(20)),
-            children: [
-              Card(
-                shape:  RoundedRectangleBorder(
-                  side:BorderSide(
-                    color: Colors.grey[200]!,                    
-                  ),
-                  borderRadius: BorderRadius.circular(10)
-                ),
-                elevation: 0,
-                child: InkWell(
-                  onTap: (){
-                    Get.toNamed("/order-info");
-                  },
-                  child: Column(
-                  children: [
-                    const ListTile(
-                      title: Text("订单编号：1111xxxxxxxx"),
-                    ),
-                    ListTile(
-                      leading: Container(
-                        alignment: Alignment.center,
-                        width: ScreenAdapter.width(120),
-                        height: ScreenAdapter.width(120),
-                        child: Image.network(
-                          'https://www.itying.com/images/shouji.png',
-                          fit: BoxFit.fitHeight,
+          Obx(() => controller.orderList.isNotEmpty
+              ? ListView(
+                  padding: EdgeInsets.fromLTRB(
+                      ScreenAdapter.width(20),
+                      ScreenAdapter.height(140),
+                      ScreenAdapter.width(20),
+                      ScreenAdapter.width(20)),
+                  children: controller.orderList.map((value) {
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Colors.grey[200]!,
+                          ),
+                          borderRadius: BorderRadius.circular(10)),
+                      elevation: 0,
+                      child: InkWell(
+                        onTap: () {
+                          Get.toNamed("/order-info",arguments: {
+                            "id":value.sId
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Text("订单编号：${value.orderId}"),
+                            ),
+                            Column(
+                                children: value.orderItem!.map((v) {
+                              return ListTile(
+                                leading: Container(
+                                  alignment: Alignment.center,
+                                  width: ScreenAdapter.width(120),
+                                  height: ScreenAdapter.width(120),
+                                  child: Image.network(
+                                    HttpsClient.replaeUri(v.productImg),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                title: Text("${v.productTitle}"),
+                                trailing: Text("x${v.productCount}"),
+                              );
+                            }).toList()),
+                            ListTile(
+                              leading: Wrap(children: [
+                                const Text("合计:"),
+                                Text(
+                                  "￥${value.allPrice}",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ]),
+                              trailing: TextButton(
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.grey[200])),
+                                child: const Text("申请售后"),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      title: const Text("Xiaomi 12 Pro 天玑版"),
-                      trailing: const Text("x1"),
-                    ),
-                    ListTile(
-                      leading: Container(
-                        alignment: Alignment.center,
-                        width: ScreenAdapter.width(120),
-                        height: ScreenAdapter.width(120),
-                        child: Image.network(
-                          'https://www.itying.com/images/shouji.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      title: const Text("Xiaomi 12 Pro 天玑版"),
-                      trailing: const Text("x1"),
-                    ),
-                    ListTile(
-                       leading: Wrap(children: const [
-                          Text("合计:"),
-                          Text("￥345",style: TextStyle(color: Colors.red),),
-                        ]),
-                        trailing: TextButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.grey[200])),
-                          child: const Text("申请售后"),
-                        ),
-                      ),
-                  ],
-                ),
-                ),
-                
-              ),
-               Card(
-                shape:  RoundedRectangleBorder(
-                  side:BorderSide(
-                    color: Colors.grey[200]!,                    
-                  ),
-                  borderRadius: BorderRadius.circular(10)
-                ),
-                elevation: 0,
-                child: InkWell(
-                  onTap: (){
-                    Get.toNamed("/order-info");
-                  },
-                  child: Column(
-                  children: [
-                    const ListTile(
-                      title: Text("订单编号：1111xxxxxxxx"),
-                    ),
-                    ListTile(
-                      leading: Container(
-                        alignment: Alignment.center,
-                        width: ScreenAdapter.width(120),
-                        height: ScreenAdapter.width(120),
-                        child: Image.network(
-                          'https://www.itying.com/images/shouji.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      title: const Text("Xiaomi 12 Pro 天玑版"),
-                      trailing: const Text("x1"),
-                    ),
-                    ListTile(
-                      leading: Container(
-                        alignment: Alignment.center,
-                        width: ScreenAdapter.width(120),
-                        height: ScreenAdapter.width(120),
-                        child: Image.network(
-                          'https://www.itying.com/images/shouji.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      title: const Text("Xiaomi 12 Pro 天玑版"),
-                      trailing: const Text("x1"),
-                    ),
-                    ListTile(
-                       leading: Wrap(children: const [
-                          Text("合计:"),
-                          Text("￥345",style: TextStyle(color: Colors.red),),
-                        ]),
-                        trailing: TextButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.grey[200])),
-                          child: const Text("申请售后"),
-                        ),
-                      ),
-                  ],
-                ),
-                ),
-                
-              ),
-               Card(
-                shape:  RoundedRectangleBorder(
-                  side:BorderSide(
-                    color: Colors.grey[200]!,                    
-                  ),
-                  borderRadius: BorderRadius.circular(10)
-                ),
-                elevation: 0,
-                child: InkWell(
-                  onTap: (){
-                    Get.toNamed("/order-info");
-                  },
-                  child: Column(
-                  children: [
-                    const ListTile(
-                      title: Text("订单编号：1111xxxxxxxx"),
-                    ),
-                    ListTile(
-                      leading: Container(
-                        alignment: Alignment.center,
-                        width: ScreenAdapter.width(120),
-                        height: ScreenAdapter.width(120),
-                        child: Image.network(
-                          'https://www.itying.com/images/shouji.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      title: const Text("Xiaomi 12 Pro 天玑版"),
-                      trailing: const Text("x1"),
-                    ),
-                    ListTile(
-                      leading: Container(
-                        alignment: Alignment.center,
-                        width: ScreenAdapter.width(120),
-                        height: ScreenAdapter.width(120),
-                        child: Image.network(
-                          'https://www.itying.com/images/shouji.png',
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      title: const Text("Xiaomi 12 Pro 天玑版"),
-                      trailing: const Text("x1"),
-                    ),
-                    ListTile(
-                       leading: Wrap(children: const [
-                          Text("合计:"),
-                          Text("￥345",style: TextStyle(color: Colors.red),),
-                        ]),
-                        trailing: TextButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.grey[200])),
-                          child: const Text("申请售后"),
-                        ),
-                      ),
-                  ],
-                ),
-                ),
-                
-              ),
-            ],
-          ),
+                    );
+                  }).toList())
+              : Center(
+                  child: Text("您还没有订单"),
+                )),
           Positioned(
               left: 0,
               right: 0,
