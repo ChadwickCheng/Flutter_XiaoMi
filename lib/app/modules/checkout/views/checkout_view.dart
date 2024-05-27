@@ -31,13 +31,17 @@ class CheckoutView extends GetView<CheckoutController> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: ScreenAdapter.height(10)),
-              Text("${value["selectedAttr"]}",),
+              Text(
+                "${value["selectedAttr"]}",
+              ),
               SizedBox(height: ScreenAdapter.height(10)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  [
-                  Text("￥${value["price"]}", style: TextStyle(color: Colors.red)),
-                  Text("x${value["count"]}", style: TextStyle(color: Colors.black87))
+                children: [
+                  Text("￥${value["price"]}",
+                      style: TextStyle(color: Colors.red)),
+                  Text("x${value["count"]}",
+                      style: TextStyle(color: Colors.black87))
                 ],
               )
             ],
@@ -51,45 +55,50 @@ class CheckoutView extends GetView<CheckoutController> {
     return ListView(
       padding: EdgeInsets.all(ScreenAdapter.width(40)),
       children: [
-        Obx(()=>controller.addressList.isEmpty?Container(
-          padding: EdgeInsets.only(
-              top: ScreenAdapter.height(20), bottom: ScreenAdapter.height(20)),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
-          child:  ListTile(
-            onTap: (){
-              Get.toNamed("/address-add");
-            },
-            leading: const Icon(Icons.add_location),
-            title: const Text("新建收货地址"),
-            trailing: const Icon(Icons.navigate_next),
-          ),
-        ):Container(
-          padding: EdgeInsets.only(
-              top: ScreenAdapter.height(20), bottom: ScreenAdapter.height(20)),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
-          child: ListTile(
-            onTap: (){
-              Get.toNamed("/address-list");
-            },
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("${controller.addressList[0].name} ${controller.addressList[0].phone}"),
-                SizedBox(
-                  height: ScreenAdapter.height(10),
+        Obx(() => controller.addressList.isEmpty
+            ? Container(
+                padding: EdgeInsets.only(
+                    top: ScreenAdapter.height(20),
+                    bottom: ScreenAdapter.height(20)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(ScreenAdapter.width(20))),
+                child: ListTile(
+                  onTap: () {
+                    Get.toNamed("/address-add");
+                  },
+                  leading: const Icon(Icons.add_location),
+                  title: const Text("新建收货地址"),
+                  trailing: const Icon(Icons.navigate_next),
                 ),
-                Text("${controller.addressList[0].address}"),
-              ],
-            ),
-            trailing: Icon(Icons.navigate_next),
-          ),
-        ))
-        
-        ,
+              )
+            : Container(
+                padding: EdgeInsets.only(
+                    top: ScreenAdapter.height(20),
+                    bottom: ScreenAdapter.height(20)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(ScreenAdapter.width(20))),
+                child: ListTile(
+                  onTap: () {
+                    Get.toNamed("/address-list");
+                  },
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          "${controller.addressList[0].name} ${controller.addressList[0].phone}"),
+                      SizedBox(
+                        height: ScreenAdapter.height(10),
+                      ),
+                      Text("${controller.addressList[0].address}"),
+                    ],
+                  ),
+                  trailing: Icon(Icons.navigate_next),
+                ),
+              )),
         SizedBox(
           height: ScreenAdapter.height(40),
         ),
@@ -101,11 +110,9 @@ class CheckoutView extends GetView<CheckoutController> {
               borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
           child: Obx(() => controller.checkoutList.isNotEmpty
               ? Column(
-                  children: 
-                  controller.checkoutList.map((value){
-                      return  _checkoutItem(value);
-                  }).toList()                 
-                )
+                  children: controller.checkoutList.map((value) {
+                  return _checkoutItem(value);
+                }).toList())
               : Text("")),
         ),
         SizedBox(
@@ -178,11 +185,11 @@ class CheckoutView extends GetView<CheckoutController> {
               Row(
                 children: [
                   SizedBox(width: ScreenAdapter.width(20)),
-                  const Text("共1件,合计:"),
-                  Text("¥699",
+                  Obx(() => Text("共${controller.allNum.value}件,合计:")),
+                  Obx(() => Text("${controller.allPrice.value}",
                       style: TextStyle(
                           fontSize: ScreenAdapter.fontSize(58),
-                          color: Colors.red)),
+                          color: Colors.red))),
                   SizedBox(width: ScreenAdapter.width(20)),
                 ],
               ),
@@ -196,9 +203,7 @@ class CheckoutView extends GetView<CheckoutController> {
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)))),
                   onPressed: () {
-                    // //判断用户有没有登录
-
-                    // Get.toNamed("/checkout");
+                    controller.doCheckOut();
                   },
                   child: const Text("去付款"))
             ],

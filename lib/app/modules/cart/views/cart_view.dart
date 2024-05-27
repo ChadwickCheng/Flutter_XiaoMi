@@ -82,8 +82,7 @@ class CartView extends GetView {
                                           style: ButtonStyle(
                                               backgroundColor:
                                                   MaterialStateProperty.all(
-                                                      const Color.fromRGBO(
-                                                          255, 165, 0, 0.9)),
+                                                      const Color.fromRGBO(251, 72, 5, 0.9)),
                                               foregroundColor:
                                                   MaterialStateProperty.all(
                                                       Colors.white),
@@ -101,18 +100,17 @@ class CartView extends GetView {
                                   ):Row(
                                     children: [
                                       Text("合计: "),
-                                      Text("¥98.9",
+                                     Obx(()=> Text("¥${controller.allPrice.value}",
                                           style: TextStyle(
                                               fontSize:
                                                   ScreenAdapter.fontSize(58),
-                                              color: Colors.red)),
+                                              color: Colors.red))),
                                       SizedBox(width: ScreenAdapter.width(20)),
                                       ElevatedButton(
                                           style: ButtonStyle(
                                               backgroundColor:
                                                   MaterialStateProperty.all(
-                                                      const Color.fromRGBO(
-                                                          255, 165, 0, 0.9)),
+                                                         const Color.fromRGBO(251, 72, 5, 0.9)),
                                               foregroundColor:
                                                   MaterialStateProperty.all(
                                                       Colors.white),
