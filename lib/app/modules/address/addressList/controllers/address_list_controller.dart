@@ -1,23 +1,59 @@
 import 'package:get/get.dart';
+import '../../../../../app/models/address_model.dart';
+import '../../../../models/user_model.dart';
+import '../../../../services/signServices.dart';
+import '../../../../services/httpsClient.dart';
+import '../../../../services/userServices.dart';
+import '../../../checkout/controllers/checkout_controller.dart';
 
 class AddressListController extends GetxController {
-  //TODO: Implement AddressListController
-
-  final count = 0.obs;
+  HttpsClient httpsClient = HttpsClient();
+  RxList<AddressItemModel> addressList=<AddressItemModel>[].obs;
+  CheckoutController checkoutController=Get.find<CheckoutController>();
   @override
   void onInit() {
+    getAddressList();
     super.onInit();
   }
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void onClose() {
+    checkoutController.getDefaultAddress();
     super.onClose();
   }
 
-  void increment() => count.value++;
+  getAddressList() async {
+    List userList = await UserServices.getUserInfo();
+    UserModel userInfo = UserModel.fromJson(userList[0]);
+    Map tempJson = {"uid": userInfo.sId};
+    String sign = SignServices.getSign({
+      ...tempJson,
+      "salt": userInfo.salt //私钥
+    });
+    var response =
+        await httpsClient.get("api/addressList?uid=${userInfo.sId}&sign=$sign");
+    if(response!=null){
+      var tempAddressList= AddressModel.fromJson(response.data);
+      addressList.value=tempAddressList.result!;
+      update();
+    }
+  }
+
+  changeDefaultAddress(id) async {
+    List userList = await UserServices.getUserInfo();
+    UserModel userInfo = UserModel.fromJson(userList[0]);
+    Map tempJson = {"uid": userInfo.sId,"id":id};
+    String sign = SignServices.getSign({
+      ...tempJson,
+      "salt": userInfo.salt //私钥
+    });
+    var response =
+        await httpsClient.post("api/changeDefaultAddress",data: {
+            ...tempJson,
+            "sign":sign
+        });
+    if(response!=null){
+      Get.back();
+    }
+  }
 }

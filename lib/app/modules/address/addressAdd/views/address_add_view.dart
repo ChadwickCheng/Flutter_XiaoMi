@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import '../../../../../app/services/screenAdapter.dart';
+import '../../../../../../app/services/screenAdapter.dart';
 import '../controllers/address_add_controller.dart';
 import 'package:city_pickers/city_pickers.dart';
 
@@ -33,6 +33,7 @@ class AddressAddView extends GetView<AddressAddController> {
                     Expanded(
                         flex: 1,
                         child: TextField(
+                          controller: controller.nameController,
                           decoration: InputDecoration(
                               hintStyle: TextStyle(
                                   fontSize: ScreenAdapter.fontSize(42)),
@@ -51,6 +52,7 @@ class AddressAddView extends GetView<AddressAddController> {
                     Expanded(
                         flex: 1,
                         child: TextField(
+                          controller: controller.phoneController,
                           decoration: InputDecoration(
                               hintStyle: TextStyle(
                                   fontSize: ScreenAdapter.fontSize(42)),
@@ -71,23 +73,18 @@ class AddressAddView extends GetView<AddressAddController> {
                 Container(
                   height: ScreenAdapter.height(140),
                   child: InkWell(
-                    onTap: () async {
-                      // type 1
-                      Result? result = await CityPickers.showCityPicker(
-                        context: context,
-                      );
-                      //  // type 2
-                      // Result? result = await CityPickers.showFullPageCityPicker(
-                      //   context: context,
-                      // );
-
-                      if (result != null) {
-                        print(
-                            "${result.provinceName} ${result.cityName} ${result.areaName}");
-
-                        controller.setArea(
-                            "${result.provinceName} ${result.cityName} ${result.areaName}");
-                      }
+                    onTap: () async{
+                        // type 1
+                        Result? result = await CityPickers.showCityPicker(
+                          context: context,
+                        );
+                        //  // type 2
+                        // Result? result = await CityPickers.showFullPageCityPicker(
+                        //   context: context,
+                        // );
+                        if(result!=null){                          
+                          controller.setArea("${result.provinceName} ${result.cityName} ${result.areaName}");
+                        }
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,13 +95,12 @@ class AddressAddView extends GetView<AddressAddController> {
                         SizedBox(width: ScreenAdapter.width(40)),
                         Expanded(
                             flex: 1,
-                            child: Obx(() => Text(
-                                controller.area.value == ""
-                                    ? "所在地区"
-                                    : controller.area.value,
+                            child: Obx(()=>Text(controller.area.value==""?"所在地区":controller.area.value,
                                 style: TextStyle(
                                     color: Colors.black54,
-                                    fontSize: ScreenAdapter.fontSize(42)))))
+                                    fontSize: ScreenAdapter.fontSize(42))
+                              ))
+                              )
                       ],
                     ),
                   ),
@@ -119,6 +115,7 @@ class AddressAddView extends GetView<AddressAddController> {
                     Expanded(
                         flex: 1,
                         child: TextField(
+                          controller: controller.addressController,
                           decoration: InputDecoration(
                               hintStyle: TextStyle(
                                   fontSize: ScreenAdapter.fontSize(42)),
@@ -134,7 +131,9 @@ class AddressAddView extends GetView<AddressAddController> {
           Padding(
             padding: EdgeInsets.all(ScreenAdapter.width(40)),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                controller.doAddAddress();
+              },
               child: Container(
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(251, 72, 5, 0.9),
